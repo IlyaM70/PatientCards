@@ -1,0 +1,71 @@
+﻿@{
+    @model HomeViewModel
+    ViewData["Title"] = "Главная";
+}
+
+@* Header *@
+<h1 class="text-center display-1 mb-3">@ViewData["Title"]</h1>
+@* btn *@
+<div class="mb-3 container-xl">
+    <a class="btn btn-primary"
+       asp-controller="Patient"
+       asp-action="Upsert">
+        Добавить пациента
+    </a>
+</div>
+@*Filter*@
+<div class="mb-3 container-xl">
+    <form asp-controller="Home" asp-action="Index" method="post">
+        <div class="d-flex">
+            <div class="d-flex align-items-center">
+                <label>Поиск:</label>
+                <div class="ms-3">
+                    <select class="form-select" asp-for="SelectedFilter" asp-items="Model.filterSelect"></select>
+                </div>
+            </div>
+            <div class="ms-3 d-flex col-3">
+                <input class="form-control" asp-for="SearchString" placeholder="Поиск" />
+            </div>
+            <div class="ms-3 d-flex align-items-center form-check">
+                <input asp-for="Descending" class="form-check-input" type="checkbox" id="flexCheckDefault">
+                <label class="ms-2 form-check-label" for="flexCheckDefault">
+                    Сортировать по убыванию
+                </label>
+            </div>
+            <button type="submit" class="ms-3 btn btn-primary">Найти</button>
+        </div>
+    </form>
+</div>
+
+@* Body *@
+<div class="container-xl">
+    <table class="table mb-3">
+        <thead>
+            <tr>
+                <th scope="col">Фамилия</th>
+                <th scope="col">Имя</th>
+                <th scope="col">Отчество</th>
+                <th scope="col">Телефон</th>
+                <th scope="col">Дата рождения</th>
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var patient in Model.patients)
+            {
+                <tr>
+                    <th scope="row">@patient.LastName</th>
+                    <td>@patient.FirstName</td>
+                    <td>@patient.Patronymic</td>
+                    <td>@patient.Phone</td>
+                    <td>@patient.DateOfBirth</td>
+                    <td><a class="btn btn-primary"
+                        asp-controller="Patient"
+                        asp-action="Details"
+                        asp-route-id="@patient.Id">
+                        Подробнее</a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

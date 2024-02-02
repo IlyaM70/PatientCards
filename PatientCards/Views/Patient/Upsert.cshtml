@@ -1,0 +1,75 @@
+﻿@model Patient
+@{
+    ViewData["Title"] = (!string.IsNullOrEmpty(Model.Id) ? "Редактировать" : "Добавить") + " пациента";
+}
+<div class="card shadow border-0 mt-4">
+    @* Header *@
+    <h1 class="text-center display-2 mb-3">@ViewData["Title"]</h1>
+    <div class="card-body p-4">
+        <form method="post" class="row">
+            <div class="border p-3">
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="LastName" class="form-control border-0 shadow" />
+                    <label asp-for="LastName" class="ms-2">Фамилия</label>
+                    <span asp-validation-for="LastName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="FirstName" class="form-control border-0 shadow" />
+                    <label asp-for="FirstName" class="ms-2">Имя</label>
+                    <span asp-validation-for="FirstName" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Patronymic" class="form-control border-0 shadow" />
+                    <label asp-for="Patronymic" class="ms-2">Отчество, если есть</label>
+                    <span asp-validation-for="Patronymic" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="DateOfBirth" type="date" class="form-control border-0 shadow" />
+                    <label asp-for="DateOfBirth" class="ms-2">Дата рождения</label>
+                    <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating py-2 col-12">
+                    <input asp-for="Phone" class="form-control border-0 shadow" />
+                    <label asp-for="Phone" class="ms-2">Телефон</label>
+                    <span asp-validation-for="Phone" class="text-danger"></span>
+                </div>
+
+                <div class="row pt-2">
+                    <div class="col-6 col-md-3">
+                        <button type="submit" class="btn btn-primary form-control">@(!string.IsNullOrEmpty(Model.Id) ? "Потвердить" : "Добавить")</button>
+                    </div>
+                    <div class="col-6 col-md-3">
+                        @if (string.IsNullOrEmpty(Model.Id))
+                        {
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-secondary form-control">
+                                На главную
+                            </a>
+                        }
+                        else
+                        {
+                            <a asp-controller="Patient" asp-action="Details" asp-route-id="@Model.Id" class="btn btn-secondary form-control">
+                                Назад
+                            </a>
+                        }
+
+
+                    </div>
+                </div>
+
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

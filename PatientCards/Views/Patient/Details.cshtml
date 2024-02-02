@@ -1,0 +1,84 @@
+﻿@{
+    @model Patient
+    ViewData["Title"] = $"Пациент - {Model.LastName}";
+}
+
+<form method="post">
+    <div class="card shadow border-0 mt-4 mb-4">
+        @* Header *@
+        <h1 class="text-center display-2 mb-3">@Model.LastName @Model.FirstName @Model.Patronymic</h1>
+        <div class="card-body">
+            <div class="py-3">
+                @* Кнопки *@
+                <div class="row">
+                    <div class="col-6 col-md-4 offset-lg-1 pb-1">
+                        <a asp-controller="Home" asp-action="Index" class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>На главную</small>
+                        </a>
+                        <a asp-controller="Patient" asp-action="Upsert" asp-route-id="@Model.Id" class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Редактировать</small>
+                        </a>
+                        <a asp-controller="Patient" asp-action="ExportToXml" asp-route-id="@Model.Id" class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Скачать XML файл пациента</small>
+                        </a>
+                        <a asp-controller="Patient" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Удалить</small>
+                        </a>
+                    </div>
+                </div>
+                @* Информация о пациенте *@
+                <div class="row">
+                    <div class="col-12 col-lg-6 offset-lg-1">
+                        <h3>Информация о пациенте</h3>
+                        <div class="row pl-2 my-3">
+                            <p class="lh-sm"><b>Дата рождения:</b> @Model.DateOfBirth</p>
+                            <p class="lh-sm"><b>Телефон:</b> @Model.Phone</p>
+                        </div>
+                    </div>
+                </div>
+                @* Добавить встречу *@
+                <div class="row">
+                    <div class="col-6 col-md-2 offset-lg-1 pb-1">
+                        <a asp-controller="Appointment" asp-action="Upsert" asp-route-patientId="@Model.Id"
+                        class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Добавить встречу</small>
+                        </a>
+                    </div>
+                </div>
+                @* Визиты пациента *@
+                <div class="row">
+                    <div class="col-12 col-lg-10 offset-lg-1">
+                        <h3>Встречи пациента</h3>
+                        <table class="table mb-3">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Дата посещения</th>
+                                    <th scope="col">Даигноз</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                @foreach (var appointment in Model.Appointments)
+                                {
+                                    <tr>
+                                        <th scope="row">@appointment.DateOfAppointment.ToLocalTime().ToString("g")</th>
+                                        <td>@appointment.Diagnosis</td>
+                                        <td>
+                                            <a class=" btn btn-primary"
+                                               asp-controller="Appointment"
+                                               asp-action="Details"
+                                               asp-route-appointmentId="@appointment.Id"
+                                               asp-route-patientId="@Model.Id">
+                                                Подробнее
+                                            </a>
+                                        </td>
+                                    </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

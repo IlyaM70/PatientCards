@@ -1,0 +1,60 @@
+﻿@{
+    @model Appointment
+    ViewData["Title"] = $"Встреча - {Model.Patient!.LastName} - {Model.DateOfAppointment.ToLocalTime().ToString("g")}";
+}
+
+<form method="post">
+    <div class="card shadow border-0 mt-4 mb-4">
+        @* Header *@
+        <h1 class="text-center display-2 mb-3">@ViewData["Title"]</h1>
+        <div class="card-body">
+            <div class="py-3">
+                @* Кнопки *@
+                <div class="row">
+                    <div class="col-6 col-md-2 offset-lg-1 pb-1">
+                        <a asp-controller="Patient" asp-action="Details" asp-route-id="@Model.PatientId"
+                        class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Назад</small>
+                        </a>
+                        <a asp-controller="Appointment" asp-action="Upsert"
+                            asp-route-appointmentId="@Model.Id"
+                           asp-route-patientId="@Model.PatientId"
+                            class="btn btn-outline-primary bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Редактировать</small>
+                        </a>
+                        <a asp-controller="Appointment" asp-action="Delete"
+                        asp-route-appointmentId="@Model.Id"
+                        asp-route-patientId="@Model.PatientId"
+                        class="btn btn-danger bg-gradient mb-3 fw-semibold btn-sm text-uppercase">
+                            <small>Удалить</small>
+                        </a>
+                    </div>
+                </div>
+                @* Информация о встрече*@
+                <div class="row">
+                    <div class="col-12 col-lg-6 offset-lg-1">
+                        <h3>Информация о встрече</h3>
+                        <div class="row pl-2 my-3">
+                            <p class="lh-sm"><b>Дата встречи:</b> @Model.DateOfAppointment.ToLocalTime().ToString("g")</p>
+                            <p class="lh-sm"><b>Диагноз:</b> @Model.Diagnosis</p>
+                        </div>
+                    </div>
+                </div>
+                @* Информация о пациенте *@
+                <div class="row">
+                    <div class="col-12 col-lg-6 offset-lg-1">
+                        <h3>Информация о пациенте</h3>
+                        <div class="row pl-2 my-3">
+                            <p class="lh-sm"><b>Фамилия:</b> @Model.Patient.LastName</p>
+                            <p class="lh-sm"><b>Имя:</b> @Model.Patient.FirstName</p>
+                            <p class="lh-sm"><b>Отчество:</b> @Model.Patient.Patronymic</p>
+                            <p class="lh-sm"><b>Дата рождения:</b> @Model.Patient.DateOfBirth</p>
+                            <p class="lh-sm"><b>Телефон:</b> @Model.Patient.Phone</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
